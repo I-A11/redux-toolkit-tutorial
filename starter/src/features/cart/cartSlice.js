@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import cartItems from "../../cartItems";
+import { t } from "i18next";
 
 const initialState = {
   cartItems: cartItems,
@@ -28,10 +29,21 @@ const cartSlice = createSlice({
 
       cartItem.amount = cartItem.amount - 1;
     },
+    calculateTotals: (state) => {
+      let amount = 0;
+      let total = 0;
+      state.cartItems.forEach((item) => {
+        amount += item.amount;
+        total += item.amount * item.price;
+      });
+      state.amount = amount;
+      state.total = parseFloat(total.toFixed(2));
+    },
   },
 });
 
 // console.log(cartSlice);
 
-export const { clearCart, removeItem, increase, decrease } = cartSlice.actions;
+export const { clearCart, removeItem, increase, decrease, calculateTotals } =
+  cartSlice.actions;
 export default cartSlice.reducer;
